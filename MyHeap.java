@@ -3,12 +3,14 @@ package com.company;
 import sun.net.www.content.text.Generic;
 
 public class MyHeap<T extends  Comparable<T>> {
+    private final int rootIndex = 1;
     private MyArrayList<T> list;
     public MyHeap(){
         list = new MyArrayList<>();
+        list.add(null);
     }
     public boolean empty(){
-        if(list.size()!=0){
+        if(list.size()>1){
             return false;
         }else{
             return true;
@@ -16,11 +18,11 @@ public class MyHeap<T extends  Comparable<T>> {
     }
 
     public int size(){
-        return list.size();
+        return (list.size()-1);
     }
 
     public T getMin(){
-        return list.get(0);
+        return list.get(rootIndex);
     }
 
     public void insert(T item){
@@ -33,9 +35,9 @@ public class MyHeap<T extends  Comparable<T>> {
     }
 
     public T removeRoot(){
-        Object temp = list.get(0);
-        list.remove(0);//delete first element, after that move array and minHeapify it
-        minHeapify(0);
+        Object temp = list.get(rootIndex);
+        list.remove(rootIndex);//delete first element, after that move array and minHeapify it
+        minHeapify(rootIndex);
         return (T)temp;
     }
 
@@ -43,7 +45,7 @@ public class MyHeap<T extends  Comparable<T>> {
         boolean result = false;
         if(list.contains(item)){
             list.remove(list.indexOf(item));
-            minHeapify(0);
+            minHeapify(rootIndex);
         }
         return result;
     }
@@ -75,7 +77,6 @@ public class MyHeap<T extends  Comparable<T>> {
     }
 
     private void minHeapify(int Index){
-        Index = Index-1;
 
         if (list.get(Index).compareTo(list.get(leftChildOf(Index)))>0
                 || list.get(Index).compareTo(list.get(rightChildOf(Index)))>0) {
